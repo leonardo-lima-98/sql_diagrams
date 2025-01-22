@@ -2,9 +2,9 @@
 
 -- DROP SCHEMA "SchemaAppMobile";
 
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
-
-CREATE OR REPLACE FUNCTION generate_uuid()
+CREATE EXTENSION IF NOT EXISTS pgcrypto SCHEMA "SchemaAppMobile";
+ 
+CREATE OR REPLACE FUNCTION "SchemaAppMobile".generate_uuid()
 RETURNS TRIGGER AS $$
 BEGIN
     -- Gera um UUID apenas se o valor não for explicitamente fornecido
@@ -16,7 +16,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION set_timestamps()
+CREATE OR REPLACE FUNCTION "SchemaAppMobile".set_timestamps()
 RETURNS TRIGGER AS $$
 BEGIN
     -- Define 'created_at' apenas na inserção
@@ -32,7 +32,8 @@ END;
 $$ LANGUAGE plpgsql;
 
 
-CREATE SCHEMA "SchemaAppMobile" AUTHORIZATION pg_database_owner;
+CREATE SCHEMA IF NOT EXISTS "SchemaAppMobile" AUTHORIZATION pg_database_owner;
+
 
 COMMENT ON SCHEMA "SchemaAppMobile" IS 'standard public schema';
 -- "SchemaAppMobile".auth_group definição
@@ -155,15 +156,15 @@ CREATE TABLE "SchemaAppMobile".records_history_user (
 CREATE INDEX records_history_user_id_user_id_index ON "SchemaAppMobile".records_history_user USING btree (id, user_id);
 
 
-CREATE TRIGGER set_uuid_records_history_user BEFORE INSERT ON "SchemaAppMobile".records_history_user FOR EACH ROW EXECUTE FUNCTION generate_uuid();
-CREATE TRIGGER set_uuid_authority_permission BEFORE INSERT ON "SchemaAppMobile".authority_permission FOR EACH ROW EXECUTE FUNCTION generate_uuid();
-CREATE TRIGGER set_uuid_content_type BEFORE INSERT ON "SchemaAppMobile".content_type FOR EACH ROW EXECUTE FUNCTION generate_uuid();
-CREATE TRIGGER set_uuid_auth_user BEFORE INSERT ON "SchemaAppMobile".auth_user FOR EACH ROW EXECUTE FUNCTION generate_uuid();
-CREATE TRIGGER set_uuid_auth_group BEFORE INSERT ON "SchemaAppMobile".auth_group FOR EACH ROW EXECUTE FUNCTION generate_uuid();
+CREATE TRIGGER set_uuid_records_history_user BEFORE INSERT ON "SchemaAppMobile".records_history_user FOR EACH ROW EXECUTE FUNCTION "SchemaAppMobile".generate_uuid();
+CREATE TRIGGER set_uuid_authority_permission BEFORE INSERT ON "SchemaAppMobile".authority_permission FOR EACH ROW EXECUTE FUNCTION "SchemaAppMobile".generate_uuid();
+CREATE TRIGGER set_uuid_content_type BEFORE INSERT ON "SchemaAppMobile".content_type FOR EACH ROW EXECUTE FUNCTION "SchemaAppMobile".generate_uuid();
+CREATE TRIGGER set_uuid_auth_user BEFORE INSERT ON "SchemaAppMobile".auth_user FOR EACH ROW EXECUTE FUNCTION "SchemaAppMobile".generate_uuid();
+CREATE TRIGGER set_uuid_auth_group BEFORE INSERT ON "SchemaAppMobile".auth_group FOR EACH ROW EXECUTE FUNCTION "SchemaAppMobile".generate_uuid();
 
-CREATE TRIGGER set_timestamps_records_history_user BEFORE INSERT OR UPDATE ON "SchemaAppMobile".records_history_user FOR EACH ROW EXECUTE FUNCTION set_timestamps();
-CREATE TRIGGER set_timestamps_authority_permission BEFORE INSERT OR UPDATE ON "SchemaAppMobile".authority_permission FOR EACH ROW EXECUTE FUNCTION set_timestamps();
-CREATE TRIGGER set_timestamps_auth_user BEFORE INSERT OR UPDATE ON "SchemaAppMobile".auth_user FOR EACH ROW EXECUTE FUNCTION set_timestamps();
+CREATE TRIGGER set_timestamps_records_history_user BEFORE INSERT OR UPDATE ON "SchemaAppMobile".records_history_user FOR EACH ROW EXECUTE FUNCTION "SchemaAppMobile".set_timestamps();
+CREATE TRIGGER set_timestamps_authority_permission BEFORE INSERT OR UPDATE ON "SchemaAppMobile".authority_permission FOR EACH ROW EXECUTE FUNCTION "SchemaAppMobile".set_timestamps();
+CREATE TRIGGER set_timestamps_auth_user BEFORE INSERT OR UPDATE ON "SchemaAppMobile".auth_user FOR EACH ROW EXECUTE FUNCTION "SchemaAppMobile".set_timestamps();
 
 -- Permissions
 
