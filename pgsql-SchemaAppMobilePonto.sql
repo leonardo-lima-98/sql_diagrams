@@ -2,6 +2,8 @@
 
 -- DROP SCHEMA "SchemaAppMobile";
 
+CREATE SCHEMA IF NOT EXISTS "SchemaAppMobile";
+
 CREATE EXTENSION IF NOT EXISTS pgcrypto SCHEMA "SchemaAppMobile";
  
 CREATE OR REPLACE FUNCTION "SchemaAppMobile".generate_uuid()
