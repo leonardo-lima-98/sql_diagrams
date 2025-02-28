@@ -30,7 +30,7 @@ CREATE TABLE "customer"(
     "name" VARCHAR(255) NOT NULL,
     "email" VARCHAR(255) NOT NULL,
     "birthday" DATE NOT NULL,
-    "country" VARCHAR(255) NULL,
+    "country" VARCHAR(255) NOT NULL,
     "state" VARCHAR(255) NOT NULL
 );
 CREATE INDEX "customer_id_index" ON
