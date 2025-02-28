@@ -17,6 +17,8 @@ CREATE INDEX "purchase_product_id_index" ON
 CREATE TABLE "product"(
     "id" UUID NOT NULL,
     "name" VARCHAR(255) NOT NULL,
+    "category" VARCHAR(255) NOT NULL,
+    "description" VARCHAR(255) NOT NULL,
     "value" DECIMAL(8, 2) NOT NULL,
     "on_offer" BOOLEAN NOT NULL,
     "offer_percent" DECIMAL(8, 2) NULL
